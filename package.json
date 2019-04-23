@@ -19,11 +19,17 @@
   "homepage": "https://github.com/bt-tracker/Basic-App-Setup#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "express": "^4.16.4",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.3",
+    "pg": "^7.10.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "redux": "^4.0.1"
+    "react-redux": "^7.0.2",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.5",
+    "redux-thunk": "^2.3.0",
+    "sequelize": "^5.7.4"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
