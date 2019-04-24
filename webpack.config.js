@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 module.exports = {
   entry: "./client/src/index.jsx",
   module: {
@@ -16,5 +18,8 @@ module.exports = {
     path: __dirname + "/client/public",
     publicPath: "/",
     filename: "bundle.js"
+  },
+  devServer: {
+    contentBase: "./client/public"
   }
 };
