@@ -1,6 +1,5 @@
-const webpack = require("webpack");
-
 module.exports = {
+  mode: "production",
   entry: "./client/src/index.jsx",
   module: {
     rules: [
@@ -16,10 +15,6 @@ module.exports = {
   },
   output: {
     path: __dirname + "/client/public",
-    publicPath: "/",
     filename: "bundle.js"
-  },
-  devServer: {
-    contentBase: "./client/public"
   }
 };
