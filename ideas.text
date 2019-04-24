@@ -1,0 +1,24 @@
+Calendar Component
+
+Trackers
+- Body Weight Tracker and Chart/Graph (D3 - tracks body weight)
+    - goals tacker (I want to lose 40lbs in 40 weeks aka 1 pound a week, tracks progress and shows green for on track)
+- Lifting Weight Tracker and Chart/Graph (D3 - tracks increase in lifts)
+- Consistency Tracker (D3 - tracks number of days in gym, also tells people to rest)
+- Measurements Tracker (D3 - tracks inches and sizes of body parts and progress for user)
+- Macros / Meals input nutrition calc / tracker thing
+
+Header / Title
+- log in (google auth)
+- sign up
+- home / dashboard
+
+Input Component
+- Macros
+- Meals
+    - add to favorites
+- workouts / exercises
+    - add to favorites button
+- calories burned on cardio machines
+    - people able to add their RMR and calories burned....with macros / nutrients and calories burned can alert people if they have a deficit or a surplus of intake on calories etc
+
