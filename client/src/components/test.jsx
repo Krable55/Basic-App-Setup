@@ -4,7 +4,7 @@ export default class Test extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: "APP RENDERING"
+      test: "APP IS TESTing RENDERING"
     };
   }
   render() {
