@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const port = 3000;
+const Mongo = require('./databases/mongoDb/config.js')
 
 app.use(bodyParser.json({ type: "application/json" }));
 
@@ -14,4 +15,11 @@ app.listen(port, error => {
   } else {
     console.log(`Listening to port ${port}!`);
   }
+
 });
+
+app.get('/', (req, res) => {
+
+
+
+})
