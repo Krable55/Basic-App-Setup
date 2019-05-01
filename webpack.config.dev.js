@@ -2,6 +2,7 @@ const webpack = require("webpack");
 
 module.exports = {
   mode: "development",
+  context: __dirname,
   entry: [
     "webpack/hot/dev-server",
     "webpack-hot-middleware/client",
@@ -20,7 +21,7 @@ module.exports = {
     extensions: ["*", ".js", ".jsx"]
   },
   output: {
-    path: "/client/public",
+    path: __dirname + "/client/public",
     publicPath: "/",
     filename: "bundle.js"
   },
