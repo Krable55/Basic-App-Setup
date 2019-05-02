@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Test from "./components/test.jsx";
+import App from "./components/app.jsx";
 
-ReactDOM.render(<Test />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById("app"));
 module.hot.accept();

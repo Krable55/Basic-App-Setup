@@ -1,54 +1,62 @@
 const express = require("express");
-const router = express.Router();
 const app = express();
-
+const path = require("path");
 const bodyParser = require("body-parser");
 
-const config = require("../webpack.config.dev.js");
-const webpack = require("webpack");
-const hotMiddleware = require("webpack-hot-middleware");
-const middleware = require("webpack-dev-middleware");
-const compiler = webpack(config);
-
 const port = 3000;
-const Mongo = require('./databases/mongoDb/config.js')
-const userController = require('./controllers/usersControllers');
-const workoutsController = require('./controllers/workoutsController');
-const db = require('./databases/postgres/config');
+const Mongo = require("./databases/mongoDb/config.js");
+const db = require("./databases/postgres/config");
 
 app.use(bodyParser.json({ type: "application/json" }));
 
 app.use(express.static("client/public"));
-app.use(
-  middleware(compiler, {
-    serverSideRender: true,
-    publicPath: config.output.publicPath,
-    stats: { colors: true }
-  })
-);
-app.use(
-  hotMiddleware(compiler, {
-    log: console.log
-  })
-);
-// renders the index.html file from the client/public folder same as lines 8-10
 
+//HotReloader Setup
+(function() {
+  // Step 1: Create & configure a webpack compiler
+  var webpack = require("webpack");
+  var webpackConfig = require(process.env.WEBPACK_CONFIG
+    ? process.env.WEBPACK_CONFIG
+    : "../webpack.config.dev.js");
+  var compiler = webpack(webpackConfig);
 
-app.use('/users', userController);
-app.use('/workouts', workoutsController);
+  // Step 2: Attach the dev middleware to the compiler & the server
+  app.use(
+    require("webpack-dev-middleware")(compiler, {
+      logLevel: "warn",
+      publicPath: webpackConfig.output.publicPath
+    })
+  );
 
-db.sequelize
-  .sync({force: false})
-  .then(
-    () => {
-      app.listen(port, error => {
-        if (error) {
-          console.log("Error Connecting to Server!");
-        } else {
-          console.log(`Listening to port ${port}!`);
-        }
-    }),
-    error => {
-      console.log('Sequelize Connection Error!!', error);
+  // Step 3: Attach the hot middleware to the compiler & the server
+  app.use(
+    require("webpack-hot-middleware")(compiler, {
+      log: console.log,
+      path: "/__webpack_hmr",
+      heartbeat: 10 * 1000
+    })
+  );
+})();
+// END HotReloader Setup
+
+//Connects to all controllers
+app.use(require("./controllers"));
+
+let dataPath = path.join(__dirname, "../client/public/index.html");
+
+app.get("*", (req, res) => {
+  //make sure here is your production path if you deploy your app
+  res.sendFile(dataPath);
+});
+db.sequelize.sync({ force: false }).then(() => {
+  app.listen(port, error => {
+    if (error) {
+      console.log("Error Connecting to Server!");
+    } else {
+      console.log(`Listening to port ${port}!`);
     }
+  }),
+    error => {
+      console.log("Sequelize Connection Error!!", error);
+    };
 });
