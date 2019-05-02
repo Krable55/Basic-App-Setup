@@ -20,4 +20,7 @@ router.post('/', (req, res) => {
     });
 });
 
+// post /login to set up log in
+// put / update user if needed (change name etc)
+
 module.exports = router;
