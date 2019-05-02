@@ -1,38 +1,29 @@
 import React, { Component } from "react";
+import SignUp from "./SignUp";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
-export default class SignUp extends Component {
+
+export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: "Sign Up",
-      password: "",
-      rePassword: "",
-      username: "",
-      name: "",
-      dob: "",
+      test: "Login",
+      // password: "",
       hidden: true,
-      email: ""
+      // email: ""
     };
-    this.toggleHidden = this.toggleHidden.bind(this);
   }
-  toggleHidden() {
+
+  toggleHidden = () => {
     this.setState({ hidden: !this.state.hidden });
-  }
+  };
+
   render() {
     return (
       <div>
         <div>{this.state.test}</div>
         <br />
         <form>
-          Name:
-          <br />
-          <input type="text" name="Email" value={this.state.name} /> <br />
-          Date of Birth:
-          <br />
-          <input type="text" name="Email" value={this.state.dob} /> <br />
-          User Name:
-          <br />
-          <input type="text" name="Email" value={this.state.username} /> <br />
           Email:
           <br />
           <input type="text" name="Email" value={this.state.email} />
@@ -45,16 +36,10 @@ export default class SignUp extends Component {
             onChange={e => this.setState({ password: e.target.value })}
           />
           <br />
-          Re-Enter Password:
-          <br />
-          <input
-            type={this.state.hidden ? "password" : "text"}
-            value={this.state.rePassword}
-            onChange={e => this.setState({ rePassword: e.target.value })}
-          />
-          <br />
           <input type="checkbox" onChange={this.toggleHidden} />
           Show Password
+          <br />
+          Not a memeber? <a href="/signup">Sign up</a>
           <br />
           <br />
           <input type="submit" value="Submit" />
