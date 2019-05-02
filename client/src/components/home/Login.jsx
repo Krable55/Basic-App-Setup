@@ -1,21 +1,23 @@
 import React, { Component } from "react";
-import SignUp from "./SignUp";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { login } from "../../reducers/loginReducer";
 
-
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       test: "Login",
-      // password: "",
-      hidden: true,
-      // email: ""
+      hidden: true
     };
   }
 
   toggleHidden = () => {
+    console.log(this.props.login);
     this.setState({ hidden: !this.state.hidden });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    //Post to database
   };
 
   render() {
@@ -26,14 +28,23 @@ export default class Login extends Component {
         <form>
           Email:
           <br />
-          <input type="text" name="Email" value={this.state.email} />
+          <input
+            type="text"
+            name="Email"
+            value={this.props.email}
+            onChange={e =>
+              this.props.dispatch(login({ email: e.target.value }))
+            }
+          />
           <br />
           Password:
           <br />
           <input
             type={this.state.hidden ? "password" : "text"}
-            value={this.state.password}
-            onChange={e => this.setState({ password: e.target.value })}
+            value={this.props.login.password}
+            onChange={e =>
+              this.props.dispatch(login({ password: e.target.value }))
+            }
           />
           <br />
           <input type="checkbox" onChange={this.toggleHidden} />
@@ -42,9 +53,18 @@ export default class Login extends Component {
           Not a memeber? <a href="/signup">Sign up</a>
           <br />
           <br />
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Submit" onClick={this.handleSubmit} />
         </form>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  const { login } = state;
+  return {
+    login: login
+    // need to map state to props.....map dispatch??? and connect to store
+  };
+};
+export default connect(mapStateToProps)(Login);
