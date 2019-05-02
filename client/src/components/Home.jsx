@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-
-export default class Test extends Component {
+export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: "APP RENDERING"
+      test: "Home is still working"
     };
   }
   render() {
