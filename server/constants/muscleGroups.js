@@ -1,7 +1,7 @@
-const macros = {
-  protien: "protien",
-  fat: "fat",
-  carbs: "carbs"
+const muscleGroups = {
+    chest: 'chest',
+    biceps: 'biceps',
+    triceps: 'triceps'
 };
 
-module.exports = macros;
+module.exports = muscleGroups;

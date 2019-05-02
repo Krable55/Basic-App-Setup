@@ -1,6 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/app.jsx";
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import combineReducers from './reducers';
 
-ReactDOM.render(<App />, document.getElementById("app"));
+const store = createStore(combineReducers);
+
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById("app")
+);
 module.hot.accept();

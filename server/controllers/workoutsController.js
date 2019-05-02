@@ -24,5 +24,7 @@ router.get('/', (req, res) => {
     res.send('Got em!');
 });
 
+// get /:userID (add query filters as a params)
+// delete router.delete(/:workoutID)
 
 module.exports = router;

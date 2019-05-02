@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/bt-tracker/Basic-App-Setup#readme",
   "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.6",
     "express": "^4.16.4",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
