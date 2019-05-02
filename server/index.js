@@ -1,14 +1,7 @@
 const express = require("express");
-const fs = require("fs");
 const app = express();
-
+const path = require("path");
 const bodyParser = require("body-parser");
-
-const config = require("../webpack.config.dev.js");
-const webpack = require("webpack");
-const hotMiddleware = require("webpack-hot-middleware");
-const middleware = require("webpack-dev-middleware");
-const compiler = webpack(config);
 
 const port = 3000;
 const Mongo = require("./databases/mongoDb/config.js");
@@ -49,10 +42,7 @@ app.use(express.static("client/public"));
 //Connects to all controllers
 app.use(require("./controllers"));
 
-// renders the index.html file from the client/public folder
-let dataPath = __dirname.toString().split("/");
-dataPath.pop();
-dataPath = dataPath.join("/") + "/client/public/index.html";
+let dataPath = path.join(__dirname, "../client/public/index.html");
 
 app.get("*", (req, res) => {
   //make sure here is your production path if you deploy your app
