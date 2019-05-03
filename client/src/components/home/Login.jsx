@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { login } from "../../reducers/loginReducer";
+import { loginReducer } from "../../reducers/loginReducer";
 
 class Login extends Component {
   constructor(props) {

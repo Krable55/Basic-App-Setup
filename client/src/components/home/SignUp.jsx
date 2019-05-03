@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signUp } from "../../reducers/signUpReducer";
+import { signUpReducer } from "../../reducers/signUpReducer";
 
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -49,14 +49,17 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
   },
   controlArea: {
+    marginTop: 8,
     flexDirection: 'row',
     flex: 1,
+    display: 'flex',
   },
   link: {
-    marginTop: 10,
+    marginTop: 8,
     variant: "body1",
     flexDirection: 'row',
     flex: 2,
+    display: 'flex',
   },
 });
 
@@ -71,7 +74,6 @@ class SignUp extends Component {
   }
 
   toggleHidden = () => {
-    console.log(this.props.signUp);
     this.setState({ hidden: !this.state.hidden });
   };
 
@@ -79,6 +81,10 @@ class SignUp extends Component {
     e.preventDefault();
     //Post to database
   };
+
+  sayHi = () => {
+    console.log('HEY!')
+  }
 
   render() {
     const { classes } = this.props;
@@ -90,6 +96,14 @@ class SignUp extends Component {
             <Typography component="h1" variant="h6">
               Sign Up
             </Typography>
+            {/* <Link
+              className={classes.link}
+              onClick={this.sayHi}
+              href="/login"
+              >
+              Already A User?
+            </Link> */}
+            Already a memeber? <a href="/login">Log In</a>
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="first-name">First Name</InputLabel>
@@ -97,15 +111,15 @@ class SignUp extends Component {
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="last-name">Last Name</InputLabel>
-                <Input id="last-name" name="last-name" autoComplete="last-name" autoFocus />
+                <Input id="last-name" name="last-name" autoComplete="last-name"  />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="username">Username</InputLabel>
-                <Input id="username" name="username" autoComplete="username" autoFocus />
+                <Input id="username" name="username" autoComplete="username"  />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus />
+                <Input id="email" name="email" autoComplete="email"  />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -117,12 +131,10 @@ class SignUp extends Component {
               </FormControl>
               <FormControlLabel
                 className={classes.controlArea}
+                onChange={this.toggleHidden}
                 control={<Checkbox value="showPassword" color="primary" />}
                 label="Show Password"
               />
-              <Link className={classes.link}>
-                Already a User?
-              </Link>
               <Button
                 type="submit"
                 fullWidth
@@ -144,9 +156,13 @@ SignUp.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { signUp } = state;
+  const { signUpReducer } = state;
+  // console.log(state, 'Is this actually working?');
+  // console.log(state.signUpReducer, '???????????');
+  // console.log( { signUpReducer }, 'bet this doesnt do what ya think');
+
   return {
-    signUp: signUp
+    signUpReducer: state.signUpReducer
     // need to map state to props.....map dispatch??? and connect to store
   };
 };
