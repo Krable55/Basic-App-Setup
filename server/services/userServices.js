@@ -20,7 +20,7 @@ const createUser = (data) => {
             dob,
         },
     };
-    console.log(data, 'what is data in create user?!?1');
+    console.log(data, 'what is data in create user?!?');
     return Users.findCreateFind(options).spread((user, create) => {
         if (create) {
             // do stuff if user is new maybe
