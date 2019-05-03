@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 
-export const signUpReducer = createAction('SIGNUP');
+export const signUp = createAction('SIGNUP');
 
 const INITIAL_STATE = {
     password: '',
@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 
 export default handleActions(
     {
-        [signUpReducer]: (state, {payload}) => ({
+        [signUp]: (state, {payload}) => ({
             ...state,
             ...payload,
         }),

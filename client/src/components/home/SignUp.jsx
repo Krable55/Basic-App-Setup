@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signUpReducer } from "../../reducers/signUpReducer";
+import { signUp } from "../../reducers/signUpReducer";
 
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -87,7 +87,10 @@ class SignUp extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, dispatch } = this.props;
+    console.log(this.props, 'props??');
+    console.log(this.props.dispatch, 'Dispatch on props??');
+
 
     return (
         <main className={classes.main}>
@@ -103,7 +106,7 @@ class SignUp extends Component {
               >
               Already A User?
             </Link> */}
-            Already a memeber? <a href="/login">Log In</a>
+            <a href="/login">Already a memeber? Log In</a>
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="first-name">First Name</InputLabel>
@@ -131,7 +134,9 @@ class SignUp extends Component {
               </FormControl>
               <FormControlLabel
                 className={classes.controlArea}
-                onChange={this.toggleHidden}
+                onChange={e =>
+                  this.props.dispatch(signUp({ rePassword: e.target.value }))
+                }
                 control={<Checkbox value="showPassword" color="primary" />}
                 label="Show Password"
               />
@@ -156,18 +161,18 @@ SignUp.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { signUpReducer } = state;
-  // console.log(state, 'Is this actually working?');
-  // console.log(state.signUpReducer, '???????????');
+  const { signUp } = state;
+  console.log(state, 'Is this actually working?');
+  console.log(state.signUp, '???????????');
   // console.log( { signUpReducer }, 'bet this doesnt do what ya think');
 
   return {
-    signUpReducer: state.signUpReducer
+    signUp: state.signUp
     // need to map state to props.....map dispatch??? and connect to store
   };
 };
 // export default connect(mapStateToProps)(SignUp);
-export default withStyles(styles)(connect(mapStateToProps)(SignUp));
+export default withStyles(styles)(connect(mapStateToProps, { signUp })(SignUp));
 // export default connect(mapStateToProps)(withStyles(styles)(App));
 
 
@@ -249,9 +254,9 @@ export default withStyles(styles)(connect(mapStateToProps)(SignUp));
 //           <input
 //             type={this.state.hidden ? "password" : "text"}
 //             value={this.props.signUp.rePassword}
-//             onChange={e =>
-//               this.props.dispatch(signUp({ rePassword: e.target.value }))
-//             }
+            // onChange={e =>
+            //   this.props.dispatch(signUp({ rePassword: e.target.value }))
+            // }
 //           />
 //           <br />
 //           <input type="checkbox" onChange={this.toggleHidden} />

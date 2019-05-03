@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 
-export const loginReducer = createAction('LOGIN');
+export const login = createAction('LOGIN');
 
 // Reducer
 const INITIAL_STATE = {
@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 
 export default handleActions(
     {
-        [loginReducer]: (state, { payload }) => ({
+        [login]: (state, { payload }) => ({
             ...state,
             ...payload,
         }),
