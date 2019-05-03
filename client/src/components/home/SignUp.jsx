@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signUp } from "../../reducers/signUpReducer";
+import { signUpAction } from "../../reducers/signUpReducer";
 
 class SignUp extends Component {
   constructor(props) {
@@ -22,21 +22,29 @@ class SignUp extends Component {
   };
 
   render() {
+    const { signUp, dispatch } = this.props;
+    const { test, hidden } = this.state;
     return (
       <div>
-        <div>{this.state.test}</div>
+        <div>{test}</div>
         <br />
         <form>
           Name:
           <br />
-          <input type="text" name="Name" value={this.state.name} /> <br />
+          <input
+            type="text"
+            name="Name"
+            value={signUp.name}
+            onChange={e => dispatch(signUpAction({ name: e.target.value }))}
+          />
+          <br />
           Date of Birth:
           <br />
           <input
             type="text"
             name="Date of Birth"
-            value={this.props.signUp.dob}
-            onChange={e => this.props.dispatch(signUp({ dob: e.target.value }))}
+            value={signUp.dob}
+            onChange={e => dispatch(signUpAction({ dob: e.target.value }))}
           />
           <br />
           Username:
@@ -44,40 +52,34 @@ class SignUp extends Component {
           <input
             type="text"
             name="Username"
-            value={this.props.signUp.username}
-            onChange={e =>
-              this.props.dispatch(signUp({ username: e.target.value }))
-            }
+            value={signUp.username}
+            onChange={e => dispatch(signUpAction({ username: e.target.value }))}
           />
           <br />
           Email:
           <br />
           <input
             type="text"
-            value={this.props.signUp.email}
+            value={signUp.email}
             name="Email"
-            onChange={e =>
-              this.props.dispatch(signUp({ email: e.target.value }))
-            }
+            onChange={e => dispatch(signUpAction({ email: e.target.value }))}
           />
           <br />
           Password:
           <br />
           <input
-            type={this.state.hidden ? "password" : "text"}
-            value={this.props.signUp.password}
-            onChange={e =>
-              this.props.dispatch(signUp({ password: e.target.value }))
-            }
+            type={hidden ? "password" : "text"}
+            value={signUp.password}
+            onChange={e => dispatch(signUpAction({ password: e.target.value }))}
           />
           <br />
           Re-Enter Password:
           <br />
           <input
-            type={this.state.hidden ? "password" : "text"}
-            value={this.props.signUp.rePassword}
+            type={hidden ? "password" : "text"}
+            value={signUp.rePassword}
             onChange={e =>
-              this.props.dispatch(signUp({ rePassword: e.target.value }))
+              dispatch(signUpAction({ rePassword: e.target.value }))
             }
           />
           <br />

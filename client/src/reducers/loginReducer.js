@@ -1,19 +1,19 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions } from "redux-actions";
 
-export const login = createAction('LOGIN');
+export const loginAction = createAction("LOGIN");
 
 // Reducer
 const INITIAL_STATE = {
-    password: "",
-    email: ""
+  password: "",
+  email: ""
 };
 
 export default handleActions(
-    {
-        [login]: (state, { payload }) => ({
-            ...state,
-            ...payload,
-        }),
-    },
-    INITIAL_STATE
+  {
+    [loginAction]: (state, { payload }) => ({
+      ...state,
+      ...payload
+    })
+  },
+  INITIAL_STATE
 );
