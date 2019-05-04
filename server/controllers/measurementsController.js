@@ -1,18 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { createUser } = require("../services/userServices");
+const { createMeasurements } = require("../services/measurementServices");
 
-/* ------------------------- */
-/*       AUTH ROUTES         */
-/* ------------------------- */
-
-// Create New User
 router.post("/", (req, res) => {
   const { body } = req;
-  createUser(body)
+  createMeasurements(body)
     .then(result => {
-      console.log(result, "Create user result?");
-      res.send(result);
+      // console.log(result, "=> createMeasurements result?");
+      return res.json(result);
     })
     .catch(error => {
       res.send(error);

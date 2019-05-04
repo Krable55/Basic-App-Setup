@@ -53,7 +53,7 @@ db.sequelize.sync({ force: false }).then(() => {
     if (error) {
       console.log("Error Connecting to Server!");
     } else {
-      console.log(`Listening to port ${port}!`);
+      console.log(`Express connected & listening on port ${port}!`);
     }
   }),
     error => {
