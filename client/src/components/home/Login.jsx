@@ -5,6 +5,7 @@ import { loginAction } from "../../reducers/loginReducer";
 import { loginTheme } from "../../../public/CSS/themes";
 
 import Avatar from "@material-ui/core/Avatar";
+import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControl from "@material-ui/core/FormControl";
@@ -90,7 +91,10 @@ class Login extends Component {
               Login
             </Button>
             <Typography variant="subtitle1" className={classes.signUp}>
-              Not a memeber? <a href="/signup">Sign up</a>
+              Not a memeber?
+              <Link className={classes.link} href="/login">
+                Sign up
+              </Link>
             </Typography>
           </form>
         </Paper>

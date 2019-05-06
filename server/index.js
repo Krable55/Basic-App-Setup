@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const port = 3000;
 const Mongo = require("./databases/mongoDb/config.js");
 const db = require("./databases/postgres/config");
-
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: "application/json" }));
 
 app.use(express.static("client/public"));

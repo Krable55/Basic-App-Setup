@@ -5,9 +5,12 @@ const createMeasurements = data => {
   let dateObj = {};
   dateObj[date] = new bodyMeasurements(data.measurements);
   let query = { email: data.email };
-  return user.findOneAndUpdate(query, dateObj, { upsert: true }).then(doc => {
-    console.log(doc);
-  });
+  return user
+    .findOneAndUpdate(query, dateObj, { upsert: true })
+    .then(doc => {
+      return `Measurements entered for ${date}`;
+    })
+    .catch(error => error);
 };
 module.exports = {
   createMeasurements

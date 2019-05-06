@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("workouts", "postgres", "", {
+const sequelize = new Sequelize("workouts", "postgres", "null", {
   host: "localhost",
   port: 5432,
   protocol: "postgres",

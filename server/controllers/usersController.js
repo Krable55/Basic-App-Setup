@@ -1,18 +1,34 @@
 const express = require("express");
 const router = express.Router();
-const { createUser } = require("../services/userServices");
+const { registerUser, loginUser } = require("../services/userServices");
 
 /* ------------------------- */
 /*       AUTH ROUTES         */
 /* ------------------------- */
 
 // Create New User
-router.post("/", (req, res) => {
+router.post("/register", (req, res) => {
   const { body } = req;
-  createUser(body)
+  registerUser(body)
     .then(result => {
-      console.log(result, "Create user result?");
-      res.send(result);
+      if (result) {
+        console.log("Registered User");
+        res.status(200).json({ result: `Registered User: ${result}` });
+      } else {
+        return res.status(400).json({ email: "Email already in use" });
+      }
+    })
+    .catch(error => {
+      res.send(error);
+    });
+});
+
+router.post("/login", (req, res) => {
+  const { body } = req;
+  loginUser(body)
+    .then(result => {
+      console.log("result", result);
+      res.status(result.valid ? 200 : 400).json(result.msg);
     })
     .catch(error => {
       res.send(error);

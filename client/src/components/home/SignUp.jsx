@@ -2,6 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signUpAction } from "../../reducers/signUpReducer";
 
+import PropTypes from "prop-types";
+import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Link from "@material-ui/core/Link";
+import { signUpTheme } from "../../../public/CSS/themes";
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +28,6 @@ class SignUp extends Component {
   }
 
   toggleHidden = () => {
-    console.log(this.props.signUp);
     this.setState({ hidden: !this.state.hidden });
   };
 
@@ -21,85 +36,114 @@ class SignUp extends Component {
     //Post to database
   };
 
+  sayHi = () => {
+    console.log("HEY!");
+  };
+
   render() {
-    const { signUp, dispatch } = this.props;
-    const { test, hidden } = this.state;
+    const { classes, dispatch } = this.props;
+    console.log(this.props, "props??");
+    console.log(this.props.dispatch, "Dispatch on props??");
+
     return (
-      <div>
-        <div>{test}</div>
-        <br />
-        <form>
-          Name:
-          <br />
-          <input
-            type="text"
-            name="Name"
-            value={signUp.name}
-            onChange={e => dispatch(signUpAction({ name: e.target.value }))}
-          />
-          <br />
-          Date of Birth:
-          <br />
-          <input
-            type="text"
-            name="Date of Birth"
-            value={signUp.dob}
-            onChange={e => dispatch(signUpAction({ dob: e.target.value }))}
-          />
-          <br />
-          Username:
-          <br />
-          <input
-            type="text"
-            name="Username"
-            value={signUp.username}
-            onChange={e => dispatch(signUpAction({ username: e.target.value }))}
-          />
-          <br />
-          Email:
-          <br />
-          <input
-            type="text"
-            value={signUp.email}
-            name="Email"
-            onChange={e => dispatch(signUpAction({ email: e.target.value }))}
-          />
-          <br />
-          Password:
-          <br />
-          <input
-            type={hidden ? "password" : "text"}
-            value={signUp.password}
-            onChange={e => dispatch(signUpAction({ password: e.target.value }))}
-          />
-          <br />
-          Re-Enter Password:
-          <br />
-          <input
-            type={hidden ? "password" : "text"}
-            value={signUp.rePassword}
-            onChange={e =>
-              dispatch(signUpAction({ rePassword: e.target.value }))
-            }
-          />
-          <br />
-          <input type="checkbox" onChange={this.toggleHidden} />
-          Show Password
-          <br />
-          Already a memeber? <a href="/login">Log In</a>
-          <br />
-          <input type="submit" value="Submit" onClick={this.handleSubmit} />
-        </form>
-      </div>
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Typography component="h1" variant="h6">
+            Sign Up
+          </Typography>
+          <Typography variant="subtitle1" className={classes.login}>
+            Already a memeber?
+            <Link className={classes.link} onClick={this.sayHi} href="/login">
+              Log In
+            </Link>
+          </Typography>
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="first-name">First Name</InputLabel>
+              <Input
+                id="first-name"
+                name="first-name"
+                autoComplete="first-name"
+                autoFocus
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="last-name">Last Name</InputLabel>
+              <Input id="last-name" name="last-name" autoComplete="last-name" />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="username">Username</InputLabel>
+              <Input id="username" name="username" autoComplete="username" />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email Address</InputLabel>
+              <Input id="email" name="email" autoComplete="email" />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="Re-Enter Password">
+                Re-Enter Password
+              </InputLabel>
+              <Input
+                name="Re-Enter Password"
+                type="Re-Enter Password"
+                id="Re-Enter Password"
+                autoComplete="current-password"
+              />
+            </FormControl>
+            <FormControlLabel
+              className={classes.controlArea}
+              onChange={e =>
+                this.props.dispatch(signUp({ rePassword: e.target.value }))
+              }
+              control={<Checkbox value="showPassword" color="primary" />}
+              label="Show Password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign Up
+            </Button>
+          </form>
+        </Paper>
+      </main>
     );
   }
 }
 
+SignUp.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
 const mapStateToProps = state => {
   const { signUp } = state;
+  console.log(state, "Is this actually working?");
+  console.log(state.signUp, "???????????");
+  // console.log( { signUpReducer }, 'bet this doesnt do what ya think');
+
   return {
-    signUp: signUp
+    signUp: state.signUp
     // need to map state to props.....map dispatch??? and connect to store
   };
 };
-export default connect(mapStateToProps)(SignUp);
+// export default connect(mapStateToProps)(SignUp);
+// export default withStyles(styles)(
+//   connect(
+//     mapStateToProps,
+//     { signUp }
+//   )(SignUp)
+// );
+export default connect(mapStateToProps)(withStyles(signUpTheme)(SignUp));
