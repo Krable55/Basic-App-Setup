@@ -21,7 +21,9 @@ class Login extends Component {
     super(props);
     this.state = {
       test: "Login",
-      hidden: true
+      hidden: true,
+      pWord: false,
+      eMail: false
     };
   }
 
@@ -56,7 +58,10 @@ class Login extends Component {
                 type="text"
                 name="Email"
                 value={login.email}
-                onChange={e => dispatch(loginAction({ email: e.target.value }))}
+                onChange={e => {
+                  this.setState({ eMail: e.target.value.length > 0 });
+                  dispatch(loginAction({ email: e.target.value }));
+                }}
               />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
@@ -66,9 +71,10 @@ class Login extends Component {
                 id="password"
                 type={hidden ? "password" : "text"}
                 value={login.password}
-                onChange={e =>
-                  dispatch(loginAction({ password: e.target.value }))
-                }
+                onChange={e => {
+                  this.setState({ pWord: e.target.value.length > 0 });
+                  dispatch(loginAction({ password: e.target.value }));
+                }}
               />
             </FormControl>
             <Typography className={classes.showPassword}>
@@ -81,6 +87,7 @@ class Login extends Component {
             </Typography>
             <Button
               type="submit"
+              disabled={!this.state.pWord || !this.state.eMail}
               fullWidth
               variant="contained"
               color="primary"
