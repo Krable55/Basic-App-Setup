@@ -1,13 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginReducer } from "../../reducers/loginReducer";
+import { loginAction } from "../../reducers/loginReducer";
 
+import { loginTheme } from "../../../public/CSS/themes";
+
+import Avatar from "@material-ui/core/Avatar";
+import Link from "@material-ui/core/Link";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControl from "@material-ui/core/FormControl";
+import Checkbox from "@material-ui/core/Checkbox";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       test: "Login",
-      hidden: true
+      hidden: true,
+      pWord: false,
+      eMail: false
     };
   }
 
@@ -21,41 +37,75 @@ class Login extends Component {
   };
 
   render() {
+    const { classes, login, dispatch } = this.props;
+    const { test, hidden } = this.state;
     return (
-      <div>
-        <div>{this.state.test}</div>
-        <br />
-        <form>
-          Email:
-          <br />
-          <input
-            type="text"
-            name="Email"
-            value={this.props.email}
-            onChange={e =>
-              this.props.dispatch(login({ email: e.target.value }))
-            }
-          />
-          <br />
-          Password:
-          <br />
-          <input
-            type={this.state.hidden ? "password" : "text"}
-            value={this.props.login.password}
-            onChange={e =>
-              this.props.dispatch(login({ password: e.target.value }))
-            }
-          />
-          <br />
-          <input type="checkbox" onChange={this.toggleHidden} />
-          Show Password
-          <br />
-          Not a memeber? <a href="/signup">Sign up</a>
-          <br />
-          <br />
-          <input type="submit" value="Submit" onClick={this.handleSubmit} />
-        </form>
-      </div>
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <AccountCircleIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            {test}
+          </Typography>
+
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Email</InputLabel>
+
+              <Input
+                type="text"
+                name="Email"
+                value={login.email}
+                onChange={e => {
+                  this.setState({ eMail: e.target.value.length > 0 });
+                  dispatch(loginAction({ email: e.target.value }));
+                }}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                id="password"
+                type={hidden ? "password" : "text"}
+                value={login.password}
+                onChange={e => {
+                  this.setState({ pWord: e.target.value.length > 0 });
+                  dispatch(loginAction({ password: e.target.value }));
+                }}
+              />
+            </FormControl>
+            <Typography className={classes.showPassword}>
+              <Checkbox
+                color="primary"
+                type="checkbox"
+                onChange={this.toggleHidden}
+              />
+              Show Password
+            </Typography>
+            <Button
+              type="submit"
+              disabled={!this.state.pWord || !this.state.eMail}
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              value="Submit"
+              onClick={this.handleSubmit}
+            >
+              Login
+            </Button>
+            <Typography variant="subtitle1" className={classes.signUp}>
+              Not a memeber?
+              <Link className={classes.link} href="/login">
+                Sign up
+              </Link>
+            </Typography>
+          </form>
+        </Paper>
+      </main>
     );
   }
 }
@@ -67,4 +117,4 @@ const mapStateToProps = state => {
     // need to map state to props.....map dispatch??? and connect to store
   };
 };
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(withStyles(loginTheme)(Login));

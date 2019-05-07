@@ -25,9 +25,13 @@
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.6",
+    "bluebird": "^3.5.4",
+    "body-parser": "^1.19.0",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.3",
+    "passport": "^0.4.0",
     "pg": "^7.10.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -37,7 +41,8 @@
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^4.40.0"
+    "sequelize": "^4.40.0",
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

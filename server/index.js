@@ -2,11 +2,13 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
-
 const port = 3000;
 const Mongo = require("./databases/mongoDb/config.js");
 const db = require("./databases/postgres/config");
+const passport = require("passport");
+let passportConfig = require("../config/passportConfig.js");
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: "application/json" }));
 
 app.use(express.static("client/public"));
@@ -38,6 +40,10 @@ app.use(express.static("client/public"));
   );
 })();
 // END HotReloader Setup
+//Passport middleware
+app.use(passport.initialize());
+//Passport config
+passportConfig(passport);
 
 //Connects to all controllers
 app.use(require("./controllers"));
@@ -53,7 +59,7 @@ db.sequelize.sync({ force: false }).then(() => {
     if (error) {
       console.log("Error Connecting to Server!");
     } else {
-      console.log(`Listening to port ${port}!`);
+      console.log(`Express connected & listening on port ${port}!`);
     }
   }),
     error => {
