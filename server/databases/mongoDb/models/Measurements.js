@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const bodyMeasurementsSchema = new mongoose.Schema({
   // _creator: { type: ObjectId, ref: "User" },
+  weight: Number,
   shoulders: Number,
   chest: Number,
   upperStomach: Number,
