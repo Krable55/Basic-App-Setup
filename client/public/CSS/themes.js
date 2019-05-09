@@ -29,7 +29,7 @@ export const loginTheme = theme => ({
   },
   signUp: {
     paddingTop: theme.spacing.unit,
-    textAlign: "right"
+    textAlign: "center"
   },
   showPassword: {
     color: "#757575"
@@ -48,6 +48,7 @@ export const loginTheme = theme => ({
   },
   link: {
     variant: "body1",
+
     marginLeft: theme.spacing.unit / 2
   }
 });
