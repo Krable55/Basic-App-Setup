@@ -18,6 +18,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Link from "@material-ui/core/Link";
 import { signUpTheme } from "../../../public/CSS/themes";
+import TextField from '@material-ui/core/TextField';
 
 class SignUp extends Component {
   constructor(props) {
@@ -59,7 +60,7 @@ class SignUp extends Component {
           </Typography>
           <Typography variant="subtitle1" className={classes.login}>
             Already a memeber?
-            <Link className={classes.link} onClick={this.sayHi} href="/login">
+            <Link className={classes.link} href="/login">
               Log In
             </Link>
           </Typography>
@@ -158,6 +159,21 @@ class SignUp extends Component {
                   {errors.rePassword}
                 </Typography>
               )}
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+            <Input
+              error={!!errors && !!errors.dob}
+              name="dob"
+              id="date"
+              type="date"
+              defaultValue=""
+              className={classes.dob}
+            />
+            {!!errors && !!errors.rePassword && (
+              <Typography variant="subtitle2" color="error">
+                {errors.dob}
+              </Typography>
+            )}
             </FormControl>
             <Typography className={classes.showPassword}>
               <Checkbox
