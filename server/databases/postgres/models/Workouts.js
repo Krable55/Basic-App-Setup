@@ -1,10 +1,17 @@
-
-
 module.exports = function workoutModel(sequelize, DataTypes) {
     const Workouts = sequelize.define(
         'Workouts',
         {
-            name: DataTypes.STRING,
+            id: {
+                primaryKey: true,
+                allowNull: false,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
+            },
+            exercise: DataTypes.STRING,
+            userId: DataTypes.STRING,
+            reps: DataTypes.INTEGER,
+            weight: DataTypes.INTEGER,
         },
         {
             tableName: 'workouts',
@@ -15,3 +22,5 @@ module.exports = function workoutModel(sequelize, DataTypes) {
 
     return Workouts;
 };
+
+// id, userId, exercise, reps, weight
