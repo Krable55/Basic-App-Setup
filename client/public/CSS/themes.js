@@ -91,13 +91,18 @@ export const signUpTheme = theme => ({
     display: "flex"
   },
   link: {
-    // marginTop: 8,
     variant: "body1",
     marginLeft: theme.spacing.unit / 2
-    // flexDirection: "row",
-    // flex: 2,
-    // display: "flex"
-  }
+  },
+  dob: {
+    marginTop: 8,
+    marginRight: theme.spacing.unit,
+    width: "100%",
+    justifyContent: "left",
+  },
+  showPassword: {
+    marginTop: 8,
+  },
 });
 
 export const navBarTheme = theme => ({

@@ -8,6 +8,7 @@ module.exports = validateRegisterInput = data => {
   data.username = !isEmpty(data.username) ? data.username : "";
   data.lastName = !isEmpty(data.lastName) ? data.lastName : "";
   data.email = !isEmpty(data.email) ? data.email : "";
+  data.dob = !isEmpty(data.dob) ? data.dob : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.rePassword = !isEmpty(data.rePassword) ? data.rePassword : "";
 
@@ -35,6 +36,9 @@ module.exports = validateRegisterInput = data => {
   }
   if (Validator.isEmpty(data.email)) {
     errors.email = "Email is required";
+  }
+  if (Validator.isEmpty(data.dob)) {
+    errors.dob = "Date of Birth is required";
   }
   if (!Validator.isEmail(data.email)) {
     errors.email = "Please enter a valid email address";
