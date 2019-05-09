@@ -8,6 +8,7 @@ module.exports = function userModel(sequelize, DataTypes) {
       lastName: DataTypes.STRING,
       userName: DataTypes.STRING,
       dob: DataTypes.DATE,
+      username: DataTypes.STRING,
       email: {
         type: DataTypes.STRING,
         validate: { isEmail: true },

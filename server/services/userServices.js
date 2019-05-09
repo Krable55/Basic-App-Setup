@@ -13,7 +13,7 @@ const {
 } = require("../validation");
 
 const registerUser = data => {
-  const { email, firstName, lastName, dob, password } = data;
+  const { email, firstName, lastName, dob, password, username } = data;
   //Validate registration data
   const { errors, isValid } = validateRegisterInput(data);
   const mongoQuery = userMongo.where({ email: email });
@@ -26,6 +26,7 @@ const registerUser = data => {
       email,
       password,
       firstName,
+      username,
       lastName,
       dob
     }
