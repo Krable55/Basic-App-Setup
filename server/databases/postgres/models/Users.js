@@ -7,6 +7,7 @@ module.exports = function userModel(sequelize, DataTypes) {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       dob: DataTypes.DATE,
+      username: DataTypes.STRING,
       email: {
         type: DataTypes.STRING,
         validate: { isEmail: true },
