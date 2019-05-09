@@ -227,5 +227,6 @@ const updateProfileUser = data => {
 module.exports = {
   registerUser,
   loginUser,
+  updateProfileUser,
   profileUser
 };
