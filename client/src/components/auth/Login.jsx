@@ -40,7 +40,7 @@ class Login extends Component {
     let user = this.props.login;
     axios
       .post("/users/login", user)
-      .then(response => console.log(response.data))
+      .then(response => console.log("response data", response.data))
       .catch(error => {
         console.log(error.response.data);
         this.setState({ errors: error.response.data });

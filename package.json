@@ -21,7 +21,6 @@
   "homepage": "https://github.com/bt-tracker/Basic-App-Setup#readme",
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@hapi/joi": "^15.0.1",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
