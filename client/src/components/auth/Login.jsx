@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginAction } from "../../reducers/loginReducer";
-
+import axios from "axios";
 import { loginTheme } from "../../../public/CSS/themes";
-
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
@@ -21,24 +20,37 @@ class Login extends Component {
     super(props);
     this.state = {
       test: "Login",
-      hidden: true,
-      pWord: false,
-      eMail: false
+      hidden: true
     };
   }
-
+  fieldsFilled = () => {};
   toggleHidden = () => {
     console.log(this.props.login);
     this.setState({ hidden: !this.state.hidden });
   };
+  saveAndUpdate = e => {
+    const { name, value } = e.target;
+    const { dispatch } = this.props;
+    this.setState({ disabled: { [value]: value.length > 0 } });
+    dispatch(loginAction({ [name]: value }));
+  };
+
   handleSubmit = e => {
     e.preventDefault();
+    let user = this.props.login;
+    axios
+      .post("/users/login", user)
+      .then(response => console.log(response.data))
+      .catch(error => {
+        console.log(error.response.data);
+        this.setState({ errors: error.response.data });
+      });
     //Post to database
   };
 
   render() {
-    const { classes, login, dispatch } = this.props;
-    const { test, hidden } = this.state;
+    const { classes, login } = this.props;
+    const { test, hidden, errors } = this.state;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -55,27 +67,33 @@ class Login extends Component {
               <InputLabel htmlFor="password">Email</InputLabel>
 
               <Input
+                error={!!errors && !!errors.email}
                 type="text"
-                name="Email"
+                name="email"
                 value={login.email}
-                onChange={e => {
-                  this.setState({ eMail: e.target.value.length > 0 });
-                  dispatch(loginAction({ email: e.target.value }));
-                }}
+                onChange={e => this.saveAndUpdate(e)}
               />
             </FormControl>
+            {!!errors && !!errors.email && (
+              <Typography variant="subtitle2" color="error">
+                {errors.email}
+              </Typography>
+            )}
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="password">Password</InputLabel>
               <Input
                 name="password"
+                error={!!errors && !!errors.password}
                 id="password"
                 type={hidden ? "password" : "text"}
                 value={login.password}
-                onChange={e => {
-                  this.setState({ pWord: e.target.value.length > 0 });
-                  dispatch(loginAction({ password: e.target.value }));
-                }}
+                onChange={e => this.saveAndUpdate(e)}
               />
+              {!!errors && !!errors.password && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.password}
+                </Typography>
+              )}
             </FormControl>
             <Typography className={classes.showPassword}>
               <Checkbox
@@ -87,7 +105,6 @@ class Login extends Component {
             </Typography>
             <Button
               type="submit"
-              disabled={!this.state.pWord || !this.state.eMail}
               fullWidth
               variant="contained"
               color="primary"
@@ -99,7 +116,7 @@ class Login extends Component {
             </Button>
             <Typography variant="subtitle1" className={classes.signUp}>
               Not a memeber?
-              <Link className={classes.link} href="/login">
+              <Link className={classes.link} href="/signup">
                 Sign up
               </Link>
             </Typography>
@@ -114,7 +131,6 @@ const mapStateToProps = state => {
   const { login } = state;
   return {
     login: login
-    // need to map state to props.....map dispatch??? and connect to store
   };
 };
 export default connect(mapStateToProps)(withStyles(loginTheme)(Login));

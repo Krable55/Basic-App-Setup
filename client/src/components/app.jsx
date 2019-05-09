@@ -1,7 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Home from "./home/Home";
-import Login from "./home/Login";
-import SignUp from "./home/SignUp";
+import Login from "./auth/Login";
+import SignUp from "./auth/SignUp";
+import NavBar from "./layout/NavBar";
+import Dashboard from "./profile/Dashboard";
 
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
@@ -14,13 +16,17 @@ export default class App extends Component {
   }
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={SignUp} />
-        </Switch>
-      </Router>
+      <div>
+        <NavBar />
+        <div>
+          <Router>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/dashboard" component={Dashboard} />
+          </Router>
+        </div>
+      </div>
     );
   }
 }

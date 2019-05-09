@@ -6,8 +6,8 @@ const INITIAL_STATE = {
   password: "",
   rePassword: "",
   username: "",
-  name: "",
-  dob: "",
+  firstName: "",
+  lastName: "",
   email: ""
 };
 

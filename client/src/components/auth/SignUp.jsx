@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signUpAction } from "../../reducers/signUpReducer";
+import axios from "axios";
 
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
@@ -30,21 +31,25 @@ class SignUp extends Component {
   toggleHidden = () => {
     this.setState({ hidden: !this.state.hidden });
   };
-
   handleSubmit = e => {
     e.preventDefault();
-    //Post to database
+    let newUser = this.props.signUp.signUp; //Post to database
+    axios
+      .post("/users/register", newUser)
+      .then(response => console.log(response.data))
+      .catch(error => this.setState({ errors: error.response.data }));
   };
 
-  sayHi = () => {
-    console.log("HEY!");
+  saveAndUpdate = e => {
+    const { name, value } = e.target;
+    const { dispatch } = this.props;
+
+    dispatch(signUpAction({ [name]: value }));
   };
 
   render() {
-    const { classes, dispatch } = this.props;
-    console.log(this.props, "props??");
-    console.log(this.props.dispatch, "Dispatch on props??");
-
+    const { classes } = this.props;
+    const { test, hidden, errors } = this.state;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -62,58 +67,114 @@ class SignUp extends Component {
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="first-name">First Name</InputLabel>
               <Input
+                error={!!errors && !!errors.firstName}
                 id="first-name"
-                name="first-name"
+                name="firstName"
                 autoComplete="first-name"
                 autoFocus
+                onChange={e => this.saveAndUpdate(e)}
               />
+              {!!errors && !!errors.firstName && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.firstName}
+                </Typography>
+              )}
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="last-name">Last Name</InputLabel>
-              <Input id="last-name" name="last-name" autoComplete="last-name" />
+              <Input
+                error={!!errors && !!errors.lastName}
+                id="last-name"
+                name="lastName"
+                autoComplete="last-name"
+                onChange={e => this.saveAndUpdate(e)}
+              />
+              {!!errors && !!errors.lastName && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.lastName}
+                </Typography>
+              )}
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="username">Username</InputLabel>
-              <Input id="username" name="username" autoComplete="username" />
+              <Input
+                error={!!errors && !!errors.username}
+                id="username"
+                name="username"
+                autoComplete="username"
+                onChange={e => this.saveAndUpdate(e)}
+              />
+              {!!errors && !!errors.username && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.username}
+                </Typography>
+              )}
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" />
+              <Input
+                error={!!errors && !!errors.email}
+                id="email"
+                name="email"
+                autoComplete="email"
+                onChange={e => this.saveAndUpdate(e)}
+              />
+              {!!errors && !!errors.email && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.email}
+                </Typography>
+              )}
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="password">Password</InputLabel>
               <Input
+                error={!!errors && !!errors.password}
                 name="password"
-                type="password"
+                type={hidden ? "password" : "text"}
                 id="password"
                 autoComplete="current-password"
+                onChange={e => this.saveAndUpdate(e)}
               />
+              {!!errors && !!errors.password && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.password}
+                </Typography>
+              )}
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="Re-Enter Password">
                 Re-Enter Password
               </InputLabel>
               <Input
-                name="Re-Enter Password"
-                type="Re-Enter Password"
+                error={!!errors && !!errors.rePassword}
+                name="rePassword"
+                type={hidden ? "Password" : "text"}
                 id="Re-Enter Password"
                 autoComplete="current-password"
+                onChange={e => this.saveAndUpdate(e)}
               />
+              {!!errors && !!errors.rePassword && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.rePassword}
+                </Typography>
+              )}
             </FormControl>
-            <FormControlLabel
-              className={classes.controlArea}
-              onChange={e =>
-                this.props.dispatch(signUp({ rePassword: e.target.value }))
-              }
-              control={<Checkbox value="showPassword" color="primary" />}
-              label="Show Password"
-            />
+            <Typography className={classes.showPassword}>
+              <Checkbox
+                color="primary"
+                type="checkbox"
+                onChange={this.toggleHidden}
+              />
+              Show Password
+            </Typography>
             <Button
-              type="submit"
+              type="button"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={false}
+              onClick={this.handleSubmit}
             >
               Sign Up
             </Button>
@@ -129,21 +190,11 @@ SignUp.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { signUp } = state;
-  console.log(state, "Is this actually working?");
-  console.log(state.signUp, "???????????");
-  // console.log( { signUpReducer }, 'bet this doesnt do what ya think');
+  const signUp = state;
 
   return {
-    signUp: state.signUp
-    // need to map state to props.....map dispatch??? and connect to store
+    signUp: signUp
   };
 };
-// export default connect(mapStateToProps)(SignUp);
-// export default withStyles(styles)(
-//   connect(
-//     mapStateToProps,
-//     { signUp }
-//   )(SignUp)
-// );
+
 export default connect(mapStateToProps)(withStyles(signUpTheme)(SignUp));
