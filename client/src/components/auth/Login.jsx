@@ -15,7 +15,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-class Login extends Component {
+export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
