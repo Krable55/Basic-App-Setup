@@ -14,6 +14,7 @@ const {
 
 const registerUser = data => {
   const { email, firstName, lastName, dob, password, username } = data;
+  console.log(data);
   //Validate registration data
   const { errors, isValid } = validateRegisterInput(data);
   const mongoQuery = userMongo.where({ email: email });

@@ -12,44 +12,68 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Link from "@material-ui/core/Link";
 import { signUpTheme } from "../../../public/CSS/themes";
+import TextField from "@material-ui/core/TextField";
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       test: "Sign Up",
-      hidden: true
+      hiddenPassword1: true,
+      hiddenPassword2: true,
+      hidePicker: true
     };
   }
 
-  toggleHidden = () => {
-    this.setState({ hidden: !this.state.hidden });
+  toggleHiddenPassword1 = () => {
+    this.setState({ hiddenPassword1: !this.state.hiddenPassword1 });
+    console.log(this.props);
+  };
+  toggleHiddenPassword2 = () => {
+    this.setState({ hiddenPassword2: !this.state.hiddenPassword2 });
+    console.log(this.props);
   };
   handleSubmit = e => {
     e.preventDefault();
-    let newUser = this.props.signUp.signUp; //Post to database
+    console.log(this.props.signUp);
+    let newUser = this.props.signUp; //Post to database
     axios
       .post("/users/register", newUser)
       .then(response => console.log(response.data))
       .catch(error => this.setState({ errors: error.response.data }));
   };
-
+  onDateFocus = () => {
+    this.setState({ hidePicker: false });
+  };
+  onDateBlur = () => {
+    this.setState({ hidePicker: true });
+  };
   saveAndUpdate = e => {
     const { name, value } = e.target;
-    const { dispatch } = this.props;
+    const { signUpAction } = this.props;
+    //Fix the date Changeing
+    // if (name === "dob") {
+    //   let edited = value.split("-");
+    //   edited = edited.concat(edited.shift()).join("/");
+    //   console.log(edited);
 
-    dispatch(signUpAction({ [name]: value }));
+    // }
+    signUpAction({ [name]: value });
   };
 
   render() {
     const { classes } = this.props;
-    const { test, hidden, errors } = this.state;
+    const { hiddenPassword1, hiddenPassword2, hidePicker, errors } = this.state;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -59,7 +83,7 @@ class SignUp extends Component {
           </Typography>
           <Typography variant="subtitle1" className={classes.login}>
             Already a memeber?
-            <Link className={classes.link} onClick={this.sayHi} href="/login">
+            <Link className={classes.link} href="/login">
               Log In
             </Link>
           </Typography>
@@ -92,6 +116,25 @@ class SignUp extends Component {
               {!!errors && !!errors.lastName && (
                 <Typography variant="subtitle2" color="error">
                   {errors.lastName}
+                </Typography>
+              )}
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <TextField
+                error={!!errors && !!errors.dob}
+                name="dob"
+                label="Date of birth"
+                id="date"
+                type={hidePicker ? "text" : "date"}
+                onFocus={this.onDateFocus}
+                onBlur={this.onDateBlur}
+                defaultValue=""
+                className={classes.dob}
+                onChange={e => this.saveAndUpdate(e)}
+              />
+              {!!errors && !!errors.dob && (
+                <Typography variant="subtitle2" color="error">
+                  {errors.dob}
                 </Typography>
               )}
             </FormControl>
@@ -130,10 +173,20 @@ class SignUp extends Component {
               <Input
                 error={!!errors && !!errors.password}
                 name="password"
-                type={hidden ? "password" : "text"}
+                type={hiddenPassword1 ? "password" : "text"}
                 id="password"
                 autoComplete="current-password"
                 onChange={e => this.saveAndUpdate(e)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.toggleHiddenPassword1}
+                    >
+                      {hiddenPassword1 ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
               {!!errors && !!errors.password && (
                 <Typography variant="subtitle2" color="error">
@@ -148,10 +201,20 @@ class SignUp extends Component {
               <Input
                 error={!!errors && !!errors.rePassword}
                 name="rePassword"
-                type={hidden ? "Password" : "text"}
+                type={hiddenPassword2 ? "Password" : "text"}
                 id="Re-Enter Password"
                 autoComplete="current-password"
                 onChange={e => this.saveAndUpdate(e)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.toggleHiddenPassword2}
+                    >
+                      {hiddenPassword2 ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
               {!!errors && !!errors.rePassword && (
                 <Typography variant="subtitle2" color="error">
@@ -159,14 +222,7 @@ class SignUp extends Component {
                 </Typography>
               )}
             </FormControl>
-            <Typography className={classes.showPassword}>
-              <Checkbox
-                color="primary"
-                type="checkbox"
-                onChange={this.toggleHidden}
-              />
-              Show Password
-            </Typography>
+
             <Button
               type="button"
               fullWidth
@@ -190,11 +246,19 @@ SignUp.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const signUp = state;
+  const { signUp } = state;
 
   return {
     signUp: signUp
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    signUpAction: info => dispatch(signUpAction(info))
+  };
+};
 
-export default connect(mapStateToProps)(withStyles(signUpTheme)(SignUp));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(signUpTheme)(SignUp));

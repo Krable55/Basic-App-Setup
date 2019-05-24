@@ -6,6 +6,7 @@ module.exports = function userModel(sequelize, DataTypes) {
     {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
+      // userName: DataTypes.STRING, **Resolve this naming convention
       dob: DataTypes.DATE,
       username: DataTypes.STRING,
       email: {

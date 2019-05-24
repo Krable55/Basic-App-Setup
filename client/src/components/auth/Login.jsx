@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginAction } from "../../reducers/loginReducer";
 import axios from "axios";
+
+import PropTypes from "prop-types";
 import { loginTheme } from "../../../public/CSS/themes";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
@@ -10,6 +12,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
 import Input from "@material-ui/core/Input";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputLabel from "@material-ui/core/InputLabel";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Paper from "@material-ui/core/Paper";
@@ -23,16 +29,15 @@ export class Login extends Component {
       hidden: true
     };
   }
-  fieldsFilled = () => {};
   toggleHidden = () => {
-    console.log(this.props.login);
+    console.log(this.props);
     this.setState({ hidden: !this.state.hidden });
   };
   saveAndUpdate = e => {
     const { name, value } = e.target;
-    const { dispatch } = this.props;
+    const { loginAction } = this.props;
     this.setState({ disabled: { [value]: value.length > 0 } });
-    dispatch(loginAction({ [name]: value }));
+    loginAction({ [name]: value });
   };
 
   handleSubmit = e => {
@@ -67,6 +72,7 @@ export class Login extends Component {
               <InputLabel htmlFor="password">Email</InputLabel>
 
               <Input
+                id="email"
                 error={!!errors && !!errors.email}
                 type="text"
                 name="email"
@@ -88,6 +94,16 @@ export class Login extends Component {
                 type={hidden ? "password" : "text"}
                 value={login.password}
                 onChange={e => this.saveAndUpdate(e)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.toggleHidden}
+                    >
+                      {hidden ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
               {!!errors && !!errors.password && (
                 <Typography variant="subtitle2" color="error">
@@ -95,15 +111,8 @@ export class Login extends Component {
                 </Typography>
               )}
             </FormControl>
-            <Typography className={classes.showPassword}>
-              <Checkbox
-                color="primary"
-                type="checkbox"
-                onChange={this.toggleHidden}
-              />
-              Show Password
-            </Typography>
             <Button
+              id="submitButton"
               type="submit"
               fullWidth
               variant="contained"
@@ -133,4 +142,15 @@ const mapStateToProps = state => {
     login: login
   };
 };
-export default connect(mapStateToProps)(withStyles(loginTheme)(Login));
+const mapDispatchToProps = dispatch => {
+  return {
+    loginAction: info => dispatch(loginAction(info))
+  };
+};
+Login.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(loginTheme)(Login));

@@ -8,7 +8,8 @@ const INITIAL_STATE = {
   username: "",
   firstName: "",
   lastName: "",
-  email: ""
+  email: "",
+  dob: null,
 };
 
 export default handleActions(
