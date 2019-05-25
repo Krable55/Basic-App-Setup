@@ -12,16 +12,15 @@ module.exports = validateRegisterInput = data => {
   data.password = !isEmpty(data.password) ? data.password : "";
   data.rePassword = !isEmpty(data.rePassword) ? data.rePassword : "";
 
-  if (!Validator.isLength(data.username, { min: 2, max: 30 })) {
-    errors.firstName = "Username must be between 2 and 30 characters";
-  }
   if (!Validator.isLength(data.firstName, { min: 2, max: 30 })) {
     errors.firstName = "First name must be between 2 and 30 characters";
   }
   if (!Validator.isLength(data.lastName, { min: 2, max: 30 })) {
     errors.lastName = "Last name must be between 2 and 30 characters";
   }
-
+  if (!Validator.isLength(data.username, { min: 2, max: 30 })) {
+    errors.firstName = "Username must be between 2 and 30 characters";
+  }
   if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
     errors.password = "Password must be at least 6 characters";
   }

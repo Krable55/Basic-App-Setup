@@ -1,22 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signUpAction } from "../../reducers/signUpReducer";
+import { fetchRequest } from "../../reducers/asyncRequestReducer";
 import axios from "axios";
 
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -43,14 +41,13 @@ class SignUp extends Component {
     this.setState({ hiddenPassword2: !this.state.hiddenPassword2 });
     console.log(this.props);
   };
+  componentDidMount() {
+    console.log(this.props);
+  }
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.props.signUp);
     let newUser = this.props.signUp; //Post to database
-    axios
-      .post("/users/register", newUser)
-      .then(response => console.log(response.data))
-      .catch(error => this.setState({ errors: error.response.data }));
+    this.props.fetchRequest(axios.post("/users/register", newUser));
   };
   onDateFocus = () => {
     this.setState({ hidePicker: false });
@@ -61,19 +58,13 @@ class SignUp extends Component {
   saveAndUpdate = e => {
     const { name, value } = e.target;
     const { signUpAction } = this.props;
-    //Fix the date Changeing
-    // if (name === "dob") {
-    //   let edited = value.split("-");
-    //   edited = edited.concat(edited.shift()).join("/");
-    //   console.log(edited);
 
-    // }
     signUpAction({ [name]: value });
   };
 
   render() {
-    const { classes } = this.props;
-    const { hiddenPassword1, hiddenPassword2, hidePicker, errors } = this.state;
+    const { classes, errors } = this.props;
+    const { hiddenPassword1, hiddenPassword2, hidePicker } = this.state;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -246,15 +237,17 @@ SignUp.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { signUp } = state;
+  const { auth } = state;
 
   return {
-    signUp: signUp
+    signUp: auth.signUp,
+    errors: auth.errors
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    signUpAction: info => dispatch(signUpAction(info))
+    signUpAction: info => dispatch(signUpAction(info)),
+    fetchRequest: info => dispatch(fetchRequest(info))
   };
 };
 

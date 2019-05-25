@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   firstName: "",
   lastName: "",
   email: "",
-  dob: null,
+  dob: null
 };
 
 export default handleActions(

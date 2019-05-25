@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginAction } from "../../reducers/loginReducer";
+import { fetchRequest } from "../../reducers/asyncRequestReducer";
 import axios from "axios";
 
 import PropTypes from "prop-types";
@@ -10,7 +11,6 @@ import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControl from "@material-ui/core/FormControl";
-import Checkbox from "@material-ui/core/Checkbox";
 import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -36,26 +36,21 @@ export class Login extends Component {
   saveAndUpdate = e => {
     const { name, value } = e.target;
     const { loginAction } = this.props;
-    this.setState({ disabled: { [value]: value.length > 0 } });
+    // this.setState({ disabled: { [value]: value.length > 0 } });
     loginAction({ [name]: value });
   };
-
+  componentDidMount() {
+    console.log(this.props);
+  }
   handleSubmit = e => {
     e.preventDefault();
     let user = this.props.login;
-    axios
-      .post("/users/login", user)
-      .then(response => console.log("response data", response.data))
-      .catch(error => {
-        console.log(error.response.data);
-        this.setState({ errors: error.response.data });
-      });
-    //Post to database
+    this.props.fetchRequest(axios.post("/users/login", user));
   };
 
   render() {
-    const { classes, login } = this.props;
-    const { test, hidden, errors } = this.state;
+    const { login, errors, classes } = this.props;
+    const { test, hidden } = this.state;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -136,20 +131,24 @@ export class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
 const mapStateToProps = state => {
-  const { login } = state;
+  const { auth } = state;
   return {
-    login: login
+    login: auth.login,
+    errors: auth.errors
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    loginAction: info => dispatch(loginAction(info))
+    loginAction: info => dispatch(loginAction(info)),
+    fetchRequest: info => dispatch(fetchRequest(info))
   };
 };
-Login.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
