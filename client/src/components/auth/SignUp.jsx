@@ -41,9 +41,7 @@ class SignUp extends Component {
     this.setState({ hiddenPassword2: !this.state.hiddenPassword2 });
     console.log(this.props);
   };
-  componentDidMount() {
-    console.log(this.props);
-  }
+  componentDidMount() {}
   handleSubmit = e => {
     e.preventDefault();
     let newUser = this.props.signUp; //Post to database
@@ -233,15 +231,17 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  signUpAction: PropTypes.func.isRequired,
+  fetchRequest: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
-  const { auth } = state;
+  const { signUp, errors } = state;
 
   return {
-    signUp: auth.signUp,
-    errors: auth.errors
+    signUp: signUp,
+    errors: errors
   };
 };
 const mapDispatchToProps = dispatch => {

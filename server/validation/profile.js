@@ -1,7 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("./isEmpty");
 
-let createProfileInput = data => {
+let validateProfileInput = data => {
   data.age = !isEmpty(data.age) ? data.age : 0;
   data.weight = !isEmpty(data.weight) ? data.weight : 0;
   data.bmi = !isEmpty(data.bmi) ? data.bmi : 0;
@@ -30,5 +30,5 @@ let validateProfileComplete = data => {
 };
 module.exports = {
   validateProfileComplete,
-  createProfileInput
+  validateProfileInput
 };

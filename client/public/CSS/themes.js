@@ -98,11 +98,23 @@ export const signUpTheme = theme => ({
     marginTop: 8,
     marginRight: theme.spacing.unit,
     width: "100%",
-    justifyContent: "left",
+    justifyContent: "left"
   },
   showPassword: {
-    marginTop: 8,
+    marginTop: 8
+  }
+});
+
+export const basicNavBarTheme = theme => ({
+  root: {
+    flexGrow: 1
   },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    flexGrow: 1
+  }
 });
 
 export const navBarTheme = theme => ({

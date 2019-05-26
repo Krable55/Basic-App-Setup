@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginAction } from "../../reducers/loginReducer";
 import { fetchRequest } from "../../reducers/asyncRequestReducer";
-import axios from "axios";
 
 import PropTypes from "prop-types";
 import { loginTheme } from "../../../public/CSS/themes";
@@ -39,13 +38,15 @@ export class Login extends Component {
     // this.setState({ disabled: { [value]: value.length > 0 } });
     loginAction({ [name]: value });
   };
-  componentDidMount() {
-    console.log(this.props);
+  componentWillReceiveProps(nextProps) {
+    //Redirect to dashboard on authentication
+    if (nextProps.user && nextProps.user.isAuthenticated)
+      this.props.history.push("/dashboard");
   }
   handleSubmit = e => {
     e.preventDefault();
     let user = this.props.login;
-    this.props.fetchRequest(axios.post("/users/login", user));
+    this.props.fetchRequest({ type: "post", url: "/users/login", data: user });
   };
 
   render() {
@@ -132,14 +133,17 @@ export class Login extends Component {
 }
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  loginAction: PropTypes.func.isRequired,
+  fetchRequest: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
-  const { auth } = state;
+  const { login, request, user } = state;
   return {
-    login: auth.login,
-    errors: auth.errors
+    login: login,
+    errors: request.errors,
+    user: user
   };
 };
 const mapDispatchToProps = dispatch => {

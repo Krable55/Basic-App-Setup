@@ -12,15 +12,16 @@ module.exports = function profileModel(sequelize, DataTypes) {
       bmi: DataTypes.INTEGER,
       height: DataTypes.INTEGER,
       weight: DataTypes.INTEGER,
+      targetWeight: DataTypes.INTEGER,
       gender: DataTypes.STRING,
       goal: DataTypes.STRING,
       bio: DataTypes.STRING,
-      handle: DataTypes.STRING
+      handle: DataTypes.STRING,
+      completed: DataTypes.INTEGER
     },
     {
       tableName: "profiles",
-      timestamps: false,
-      underscored: false
+      timestamps: false
     }
   );
 

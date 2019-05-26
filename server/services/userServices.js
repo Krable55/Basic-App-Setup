@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const {
   validateRegisterInput,
   validateLoginInput,
-  createProfileInput,
+  validateProfileInput,
   validateProfileComplete
 } = require("../validation");
 
@@ -57,8 +57,10 @@ const registerUser = data => {
               console.log("Created mongo user");
             })
             .catch(err => console.log(err));
-          // user.get({ plain: true });
-          return { status: 200, msg: { success: "User Registered" } };
+          let createdUser = User.get({ plain: true });
+          delete createdUser.password;
+          delete createdUser.updatedAt;
+          return { status: 200, msg: createdUser };
         }
       })
       .catch(err => console.log(err));
@@ -66,14 +68,14 @@ const registerUser = data => {
 };
 
 const loginUser = data => {
+  //Validate Login data
   const { errors, isValid } = validateLoginInput(data);
   const { email, password } = data;
   const query = { where: { email: email } };
   //find user by email
   return Users.findOne(query)
     .then(user => {
-      //Validate Login data
-
+      //Return errors if input is invalid
       if (!isValid) {
         return { status: 400, msg: errors };
       }
@@ -81,9 +83,11 @@ const loginUser = data => {
         errors.email = "No account registered to that email";
         return { status: 400, msg: errors };
       }
+      //Validtes password
       return bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {
           const { firstName, lastName, id, email } = user;
+          //Returns user
           const payload = {
             id: id,
             name: `${firstName} ${lastName}`,
@@ -100,80 +104,19 @@ const loginUser = data => {
 };
 const profileUser = data => {
   const { email, id } = data;
-  const {
-    age,
-    weight,
-    height,
-    gender,
-    goal,
-    bio,
-    bmi,
-    handle
-  } = createProfileInput(data);
-
-  const options = {
-    where: {
-      id: id
-    },
-    defaults: {
-      id,
-      email,
-      age, //Should be entered automatically since they entered a DOB at registration
-      height,
-      weight,
-      gender,
-      goal,
-      bio,
-      bmi,
-      handle
-    }
-  };
-  //find user profile create if none exists
-  return Profiles.findCreateFind(options)
-    .spread((Profile, created) => {
-      let profile = Profile.dataValues;
-      const { errors, isComplete } = validateProfileComplete(
-        Profile.dataValues
-      );
-      if (!Profile) {
-        return {
-          status: 400,
-          msg: { profile: "There is no profile for this user" }
-        };
-      }
-      if (created) {
-        console.log("Profile created for ", email);
-        //Return a message asking them to fill out/complete their profile?
-        profile.complete = false;
-        profile.alerts = { profile: "Would you like to set up your profile?" };
-        return { status: 200, msg: Profile };
-      }
-      if (!isComplete) {
-        profile.alerts = errors;
-        profile.complete = false;
-        //return messages asking them to complete their profile
-        return { status: 200, msg: profile };
-      } else {
-        //returns profile w/o messages
-        profile.complete = true;
-        return { status: 200, msg: profile };
-      }
-    })
-    .catch(err => console.log(err));
-};
-
-const updateProfileUser = data => {
-  const { email, id } = data;
+  const completed = Math.floor((2 / 10) * 100);
+  //validate input
   // const {
   //   age,
   //   weight,
   //   height,
   //   gender,
   //   goal,
+  //   targetWeight,
   //   bio,
   //   bmi,
   //   handle
-  // } = createProfileInput(data);
+  // } = validateProfileInput(data);
 
   const options = {
     where: {
@@ -182,46 +125,52 @@ const updateProfileUser = data => {
     defaults: {
       id,
       email,
-      age, //Should be entered automatically since they entered a DOB at registration
-      height,
-      weight,
-      gender,
-      goal,
-      bio,
-      bmi,
-      handle
+      completed
     }
   };
   //find user profile create if none exists
   return Profiles.findCreateFind(options)
     .spread((Profile, created) => {
       let profile = Profile.dataValues;
-      const { errors, isComplete } = validateProfileComplete(
-        Profile.dataValues
-      );
-      if (!Profile) {
-        return {
-          status: 400,
-          msg: { profile: "There is no profile for this user" }
-        };
-      }
       if (created) {
-        console.log("Profile created for ", email);
+        // console.log("Profile created for ", email);
         //Return a message asking them to fill out/complete their profile?
-        profile.complete = false;
         profile.alerts = { profile: "Would you like to set up your profile?" };
         return { status: 200, msg: profile };
-      }
-      if (!isComplete) {
-        profile.alerts = errors;
-        profile.complete = false;
-        //return messages asking them to complete their profile
-        return { status: 200, msg: profile };
-      } else {
+      } else if (Profile.completed !== 100) {
+        profile.alerts = {
+          profile: "Finish setting up your profile!"
+        };
         //returns profile w/o messages
-        profile.complete = true;
         return { status: 200, msg: profile };
-      }
+      } else return { status: 200, msg: profile };
+    })
+    .catch(err => console.log(err));
+};
+
+//update user profile
+const updateProfileUser = data => {
+  /**** Validate inputs here ******/
+  const { id } = data;
+
+  let updatedInfo = {};
+  for (var key in data) {
+    data[key] !== null && data[key] !== undefined
+      ? (updatedInfo[key] = data[key])
+      : null;
+  }
+  const options = {
+    where: { id: id },
+    returning: true,
+    plain: true
+  };
+
+  //find and update user profile
+  return Profiles.update(updatedInfo, options)
+    .then(updatedProfile => {
+      let profile = updatedProfile[1];
+      return { status: 200, msg: profile };
+      done();
     })
     .catch(err => console.log(err));
 };
