@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
 import { dashBoardTheme } from "../../../public/CSS/themes";
+import { fetchRequest } from "../../reducers/asyncRequestReducer";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -21,9 +24,17 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    const { email, id } = this.props.user;
+    this.props.fetchRequest({
+      type: "get",
+      url: "/users/profile",
+      data: { email, id }
+    });
+  }
+
   render() {
-    const { classes, menu } = this.props;
-    console.log(menu);
+    const { classes, menu, user } = this.props;
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -38,7 +49,7 @@ class Dashboard extends Component {
           <div className={classes.toolbar} />
           <Divider />
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+            {["Meals", "Macros", "Recipes"].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -49,7 +60,7 @@ class Dashboard extends Component {
           </List>
           <Divider />
           <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
+            {["Workouts", "Exercises", "Tracker"].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -96,7 +107,12 @@ class Dashboard extends Component {
     );
   }
 }
-
+Dashboard.propTypes = {
+  classes: PropTypes.object.isRequired,
+  fetchRequest: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  menu: PropTypes.bool.isRequired
+};
 const mapStateToProps = state => {
   const { classes, user, request, dashboard } = state;
   return {
@@ -106,9 +122,10 @@ const mapStateToProps = state => {
     menu: dashboard.menu
   };
 };
-const mapDispatchToProps = state => {
+const mapDispatchToProps = dispatch => {
   return {
-    toggleMenu: () => dispatchEvent(toggleMenu())
+    toggleMenu: () => dispatchEvent(toggleMenu()),
+    fetchRequest: info => dispatch(fetchRequest(info))
   };
 };
 export default connect(

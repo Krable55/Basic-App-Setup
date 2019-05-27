@@ -181,7 +181,8 @@ export const dashBoardTheme = theme => ({
       duration: theme.transitions.duration.leavingScreen
     }),
     overflowX: "hidden",
-    width: 0
+    width: 0,
+    marginLeft: -1
   },
   toolbar: {
     display: "flex",

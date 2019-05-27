@@ -33,7 +33,6 @@ class App extends Component {
   }
   render() {
     const { classes } = this.props;
-    console.log(classes);
     let loggedIn = this.props.user && this.props.user.isAuthenticated;
     return (
       <div>
