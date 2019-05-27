@@ -8,7 +8,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
     "start": "nodemon server/index.js",
-    "build": "webpack -d --watch",
+    "build": "webpack -p",
+    "build:dev": "webpack -d --watch",
     "hot": "webpack-dev-server --config ./webpack.config.js --mode development"
   },
   "repository": {
