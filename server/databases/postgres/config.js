@@ -3,7 +3,7 @@ const path = require("path");
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize("workouts", "postgres", "null", {
-  host: "localhost",
+  host: process.env.DATABASE_URL,
   port: 5432,
   protocol: "postgres",
   dialect: "postgres",
@@ -11,6 +11,9 @@ const sequelize = new Sequelize("workouts", "postgres", "null", {
   logging: false,
   freezeTableName: true,
   underscored: false,
+  dialectOptions: {
+    ssl: true
+  },
   define: {
     timestamps: false
   },
