@@ -8,6 +8,9 @@ import PropTypes from "prop-types";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import NavBar from "./layout/NavBar";
+import BasicNavBar from "./layout/BasicNavBar";
+import { appBasicStyle } from "../../public/CSS/themes";
+import { withStyles, makeStyles, useTheme } from "@material-ui/core/styles";
 import Dashboard from "./profile/Dashboard";
 
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
@@ -15,12 +18,9 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      test: "APP IS TEST RENDERING! Still!"
-    };
+    this.state = {};
   }
   componentDidMount() {
-    console.log(this.props);
     //Check for token
     if (localStorage.jwtToken) {
       //set auth token
@@ -32,30 +32,43 @@ class App extends Component {
     }
   }
   render() {
+    const { classes } = this.props;
+    console.log(classes);
+    let loggedIn = this.props.user && this.props.user.isAuthenticated;
     return (
       <div>
-        <NavBar />
-        <div>
-          <Router>
+        {loggedIn ? (
+          <NavBar position="fixed" className={classes.appBar} />
+        ) : (
+          <BasicNavBar />
+        )}
+
+        <Router>
+          <div>
             <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/dashboard" component={Dashboard} />
-          </Router>
-        </div>
+            <Route
+              exact
+              path="/dashboard"
+              component={loggedIn ? Dashboard : Home}
+            />
+          </div>
+        </Router>
       </div>
     );
   }
 }
 
 App.propTypes = {
-  fetchRequest: PropTypes.func.isRequired
+  classes: PropTypes.object.isRequired
 };
 const mapStateToProps = state => {
-  const { user, request } = state;
+  const { user, request, classes } = state;
   return {
     user: user,
-    errors: request.errors
+    errors: request.errors,
+    classes: classes
   };
 };
 
@@ -68,4 +81,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(withStyles(appBasicStyle)(App));

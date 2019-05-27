@@ -14,10 +14,10 @@ const INITIAL_STATE = {
 
 export default handleActions(
   {
-    [signUpAction]: (state, { payload }) => ({
-      ...state,
-      ...payload
-    })
+    [signUpAction]: (state, { payload }) => {
+      if (payload === "delete") return {};
+      return { ...state, ...payload };
+    }
   },
   INITIAL_STATE
 );

@@ -35,18 +35,25 @@ export class Login extends Component {
   saveAndUpdate = e => {
     const { name, value } = e.target;
     const { loginAction } = this.props;
-    // this.setState({ disabled: { [value]: value.length > 0 } });
     loginAction({ [name]: value });
   };
+
   componentWillReceiveProps(nextProps) {
     //Redirect to dashboard on authentication
-    if (nextProps.user && nextProps.user.isAuthenticated)
+    if (nextProps.user && nextProps.user.isAuthenticated) {
       this.props.history.push("/dashboard");
+      //Remove login details from store
+      this.props.loginAction("delete");
+    }
   }
   handleSubmit = e => {
     e.preventDefault();
     let user = this.props.login;
-    this.props.fetchRequest({ type: "post", url: "/users/login", data: user });
+    this.props.fetchRequest({
+      type: "post",
+      url: "/users/login",
+      data: user
+    });
   };
 
   render() {

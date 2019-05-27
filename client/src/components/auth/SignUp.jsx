@@ -41,11 +41,25 @@ class SignUp extends Component {
     this.setState({ hiddenPassword2: !this.state.hiddenPassword2 });
     console.log(this.props);
   };
-  componentDidMount() {}
+  componentWillReceiveProps(nextProps) {
+    //Redirect to login on sucessfull registration
+    if (
+      nextProps.response &&
+      nextProps.response.msg === "User successfully created"
+    ) {
+      this.props.history.push("/login");
+      //Remove login details from store
+      this.props.signUpAction("delete");
+    }
+  }
   handleSubmit = e => {
     e.preventDefault();
     let newUser = this.props.signUp; //Post to database
-    this.props.fetchRequest(axios.post("/users/register", newUser));
+    this.props.fetchRequest({
+      type: "post",
+      url: "/users/register",
+      data: newUser
+    });
   };
   onDateFocus = () => {
     this.setState({ hidePicker: false });
@@ -237,11 +251,12 @@ SignUp.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { signUp, errors } = state;
+  const { signUp, errors, request } = state;
 
   return {
     signUp: signUp,
-    errors: errors
+    errors: errors,
+    response: request.response
   };
 };
 const mapDispatchToProps = dispatch => {

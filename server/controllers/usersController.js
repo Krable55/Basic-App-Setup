@@ -4,6 +4,7 @@ const passport = require("passport");
 const {
   registerUser,
   loginUser,
+  logOutUser,
   profileUser,
   updateProfileUser
 } = require("../services/userServices");
@@ -26,6 +27,15 @@ router.post("/login", (req, res) => {
       console.log("error in post login");
       res.send(error);
     });
+});
+
+//Logout user
+router.get("/logout", (req, res) => {
+  logOutUser()
+    .then(result => {
+      res.status(result.status).json(result.msg);
+    })
+    .catch(error => res.send(error));
 });
 
 router.get(

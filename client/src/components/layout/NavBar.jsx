@@ -1,11 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { navBarTheme } from "../../../public/CSS/themes";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
+import { setToken } from "../../reducers/authReducer";
+import { toggleMenu } from "../../reducers/dashboardReducer";
+
+import { fetchRequest } from "../../reducers/asyncRequestReducer";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -16,7 +20,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
-class NavBar extends React.Component {
+class NavBar extends Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null
@@ -39,12 +43,26 @@ class NavBar extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  handleLogOut = e => {
+    console.log(this.props);
+    e.preventDefault();
+    //remove token from local storage
+    this.props.setToken({});
+    //remove token from store
+    this.props.fetchRequest({
+      type: "get",
+      url: "/users/logout",
+      data: {}
+    });
+    this.handleMenuClose();
+  };
+
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+    console.log(classes.root);
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -54,7 +72,7 @@ class NavBar extends React.Component {
         onClose={this.handleMenuClose}
       >
         <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>Log Out</MenuItem>
+        <MenuItem onClick={this.handleLogOut}>Log Out</MenuItem>
       </Menu>
     );
 
@@ -93,12 +111,13 @@ class NavBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
               className={classes.menuButton}
               color="inherit"
               aria-label="Open drawer"
+              onClick={this.props.toggleMenu}
             >
               <MenuIcon />
             </IconButton>
@@ -150,7 +169,27 @@ class NavBar extends React.Component {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  fetchRequest: PropTypes.func.isRequired
 };
 
-export default withStyles(navBarTheme)(NavBar);
+const mapStateToProps = state => {
+  const { user, request } = state;
+  return {
+    user: user,
+    errors: request.errors
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setToken: info => dispatch(setToken(info)),
+    fetchRequest: info => dispatch(fetchRequest(info)),
+    toggleMenu: () => dispatch(toggleMenu())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(navBarTheme)(NavBar));

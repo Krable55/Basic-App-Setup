@@ -10,10 +10,10 @@ const INITIAL_STATE = {
 
 export default handleActions(
   {
-    [loginAction]: (state, { payload }) => ({
-      ...state,
-      ...payload
-    })
+    [loginAction]: (state, { payload }) => {
+      if (payload === "delete") return {};
+      return { ...state, ...payload };
+    }
   },
   INITIAL_STATE
 );

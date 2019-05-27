@@ -7,10 +7,29 @@ import { createMuiTheme } from "@material-ui/core/styles";
 //   },
 //   // typography: { useNextVariants: true },
 // })
+export const appBasicStyle = theme => ({
+  appContainer: {
+    width: "100vw",
+    height: "100vh",
+    margin: 0,
+    marginTop: "-60px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  }
+});
 export const loginTheme = theme => ({
   main: {
-    width: "auto",
-    display: "block", // Fix IE 11 issue.
+    width: "100vw",
+    height: "100vh",
+    margin: 0,
+    marginTop: "-60px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -20,7 +39,6 @@ export const loginTheme = theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -55,8 +73,13 @@ export const loginTheme = theme => ({
 
 export const signUpTheme = theme => ({
   main: {
-    width: "auto",
-    display: "block", // Fix IE 11 issue.
+    width: "100vw",
+    height: "100vh",
+    margin: 0,
+    marginTop: "-60px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -110,13 +133,68 @@ export const basicNavBarTheme = theme => ({
     flexGrow: 1
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing.unit * 2
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    color: "white"
   }
 });
 
+export const drawerMenuTheme = theme => ({
+  root: {
+    height: `240px`,
+    marginTop: "60px"
+  },
+  list: {
+    width: 250
+  },
+  fullList: {
+    width: "auto"
+  },
+  toolbar: theme.mixins.toolbar
+});
+
+const drawerWidth = 240;
+export const dashBoardTheme = theme => ({
+  root: {
+    display: "flex"
+  },
+  hide: {
+    display: "none"
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap"
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  drawerClose: {
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    overflowX: "hidden",
+    width: 0
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3
+  }
+});
 export const navBarTheme = theme => ({
   root: {
     width: "100%",
@@ -125,6 +203,9 @@ export const navBarTheme = theme => ({
   },
   grow: {
     flexGrow: 1
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
   },
   menuButton: {
     marginLeft: -12,
@@ -136,45 +217,6 @@ export const navBarTheme = theme => ({
       display: "block"
     }
   },
-  // search: {
-  //   position: "relative",
-  //   borderRadius: theme.shape.borderRadius,
-  //   backgroundColor: fade(theme.palette.common.white, 0.15),
-  //   "&:hover": {
-  //     backgroundColor: fade(theme.palette.common.white, 0.25)
-  //   },
-  //   marginRight: theme.spacing.unit * 2,
-  //   marginLeft: 0,
-  //   width: "100%",
-  //   [theme.breakpoints.up("sm")]: {
-  //     marginLeft: theme.spacing.unit * 3,
-  //     width: "auto"
-  //   }
-  // },
-  // searchIcon: {
-  //   width: theme.spacing.unit * 9,
-  //   height: "100%",
-  //   position: "absolute",
-  //   pointerEvents: "none",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center"
-  // },
-  // inputRoot: {
-  //   color: "inherit",
-  //   width: "100%"
-  // },
-  // inputInput: {
-  //   paddingTop: theme.spacing.unit,
-  //   paddingRight: theme.spacing.unit,
-  //   paddingBottom: theme.spacing.unit,
-  //   paddingLeft: theme.spacing.unit * 10,
-  //   transition: theme.transitions.create("width"),
-  //   width: "100%",
-  //   [theme.breakpoints.up("md")]: {
-  //     width: 200
-  //   }
-  // },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {

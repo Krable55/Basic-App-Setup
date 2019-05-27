@@ -16,7 +16,6 @@ export const fetchRequest = info => dispatch => {
     .then(res => {
       //If an auth token is recieved, save and set it to headers
       if (res.data.token) {
-        //Save to local storage
         const { token } = res.data;
         //Set token to local storage
         localStorage.setItem("jwtToken", token);

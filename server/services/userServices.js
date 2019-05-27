@@ -58,9 +58,11 @@ const registerUser = data => {
             })
             .catch(err => console.log(err));
           let createdUser = User.get({ plain: true });
-          delete createdUser.password;
-          delete createdUser.updatedAt;
-          return { status: 200, msg: createdUser };
+
+          return {
+            status: 200,
+            msg: "User successfully registered"
+          };
         }
       })
       .catch(err => console.log(err));
@@ -101,6 +103,12 @@ const loginUser = data => {
       });
     })
     .catch(error => console.log(error));
+};
+
+const logOutUser = () => {
+  return new Promise((resolve, reject) => {
+    resolve({ status: 200, msg: "Logged out" });
+  });
 };
 const profileUser = data => {
   const { email, id } = data;
@@ -178,6 +186,7 @@ const updateProfileUser = data => {
 module.exports = {
   registerUser,
   loginUser,
+  logOutUser,
   updateProfileUser,
   profileUser
 };
