@@ -43,10 +43,8 @@ class SignUp extends Component {
   };
   componentWillReceiveProps(nextProps) {
     //Redirect to login on sucessfull registration
-    if (
-      nextProps.response &&
-      nextProps.response.msg === "User successfully created"
-    ) {
+    console.log(nextProps.response);
+    if (nextProps.response === "User successfully registered") {
       this.props.history.push("/login");
       //Remove login details from store
       this.props.signUpAction("delete");

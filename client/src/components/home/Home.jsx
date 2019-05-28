@@ -3,7 +3,7 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: "Home is still working"
+      test: "Home"
     };
   }
   render() {

@@ -1,19 +1,23 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setAuthToken } from "../../../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
-import Home from "./home/Home";
 import { setToken } from "../reducers/authReducer";
-import PropTypes from "prop-types";
+
+import Home from "./home/Home";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import NavBar from "./layout/NavBar";
 import BasicNavBar from "./layout/BasicNavBar";
+import Profile from "./profile/Profile";
 import { appBasicStyle } from "../../public/CSS/themes";
 import { withStyles, makeStyles, useTheme } from "@material-ui/core/styles";
+import DashboardMenu from "./layout/DashboardMenu";
 import Dashboard from "./profile/Dashboard";
-
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import PrivateRoute from "./auth/PrivateRoute";
+import history from "../../../server/history";
+import { Router, Route, Switch, Link } from "react-router-dom";
 
 class App extends Component {
   constructor(props) {
@@ -42,17 +46,19 @@ class App extends Component {
           <BasicNavBar />
         )}
 
-        <Router>
-          <div>
+        <Router history={history}>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
             <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />
-            <Route
-              exact
-              path="/dashboard"
-              component={loggedIn ? Dashboard : Home}
-            />
-          </div>
+            <Switch>
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/profile" component={Profile} />
+            </Switch>
+          </main>
         </Router>
       </div>
     );

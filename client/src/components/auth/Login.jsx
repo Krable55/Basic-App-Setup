@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginAction } from "../../reducers/loginReducer";
 import { fetchRequest } from "../../reducers/asyncRequestReducer";
-
+import history from "../../../../server/history";
 import PropTypes from "prop-types";
 import { loginTheme } from "../../../public/CSS/themes";
+import { setProfile } from "../../reducers/profileReducer";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
@@ -29,7 +30,6 @@ export class Login extends Component {
     };
   }
   toggleHidden = () => {
-    console.log(this.props);
     this.setState({ hidden: !this.state.hidden });
   };
   saveAndUpdate = e => {
@@ -39,9 +39,9 @@ export class Login extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    //Redirect to dashboard on authentication
+    //Redirect and fetch profile data  on authentication
     if (nextProps.user && nextProps.user.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      history.push("/dashboard");
       //Remove login details from store
       this.props.loginAction("delete");
     }
@@ -143,6 +143,7 @@ Login.propTypes = {
   classes: PropTypes.object.isRequired,
   loginAction: PropTypes.func.isRequired,
   fetchRequest: PropTypes.func.isRequired
+  // setProfile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -156,7 +157,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loginAction: info => dispatch(loginAction(info)),
-    fetchRequest: info => dispatch(fetchRequest(info))
+    fetchRequest: info => dispatch(fetchRequest(info)),
+    setProfile: info => dispatch(setProfile(info))
   };
 };
 

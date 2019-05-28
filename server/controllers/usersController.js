@@ -51,7 +51,7 @@ router.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { body } = req;
+    const body = { id: req.user.id, email: req.user.email };
     profileUser(body)
       .then(result => {
         // console.log(result);

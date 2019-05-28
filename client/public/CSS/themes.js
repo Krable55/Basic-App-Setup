@@ -19,14 +19,31 @@ export const appBasicStyle = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3
   }
 });
 export const loginTheme = theme => ({
   main: {
     width: "100vw",
-    height: "100vh",
+    height: "50vh",
     margin: 0,
-    marginTop: "-60px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -74,9 +91,8 @@ export const loginTheme = theme => ({
 export const signUpTheme = theme => ({
   main: {
     width: "100vw",
-    height: "100vh",
+    // height: "100vh",
     margin: 0,
-    marginTop: "-60px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -89,7 +105,6 @@ export const signUpTheme = theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -156,7 +171,7 @@ export const drawerMenuTheme = theme => ({
 });
 
 const drawerWidth = 240;
-export const dashBoardTheme = theme => ({
+export const dashBoardMenuTheme = theme => ({
   root: {
     display: "flex"
   },
@@ -190,10 +205,6 @@ export const dashBoardTheme = theme => ({
     justifyContent: "flex-end",
     padding: "0 8px",
     ...theme.mixins.toolbar
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
   }
 });
 export const navBarTheme = theme => ({

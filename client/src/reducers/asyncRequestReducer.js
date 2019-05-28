@@ -10,8 +10,7 @@ const submitResponse = createAction("SUBMIT_RESPONSE");
 
 export const fetchRequest = info => dispatch => {
   dispatch(submitRequest());
-  const { type, url, data } = info;
-
+  const { type, url, data, callback } = info;
   axios[type](url, data)
     .then(res => {
       //If an auth token is recieved, save and set it to headers
@@ -26,6 +25,7 @@ export const fetchRequest = info => dispatch => {
         //Set current user
         dispatch(setCurrentUser(decoded));
       }
+      if (callback) callback(res.data);
       dispatch(submitResponse(res.data));
     })
     .catch(error => {
@@ -78,7 +78,8 @@ const errors = handleActions(
           payload: { message }
         }
       ) {
-        return { ...message };
+        //returns a single message for one error and an object for multiple errors
+        return typeof message === "object" ? { ...message } : message;
       }
     }
   },

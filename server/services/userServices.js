@@ -136,6 +136,7 @@ const profileUser = data => {
       completed
     }
   };
+  console.log(data, id);
   //find user profile create if none exists
   return Profiles.findCreateFind(options)
     .spread((Profile, created) => {
