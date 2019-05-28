@@ -8,7 +8,6 @@ const { Meals } = db;
 const createMeal = data => {
   const { name } = data;
   const options = { name };
-  console.log(data, "what is data in create workout?!?1");
   return new Promise((resolve, reject) => {
     Meals.create(options)
       .then(result => {

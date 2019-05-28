@@ -16,6 +16,7 @@ router.post("/register", (req, res) => {
     .then(result => res.status(result.status).json(result.msg))
     .catch(err => console.log(err));
 });
+
 //Login User
 router.post("/login", (req, res) => {
   const { body } = req;
@@ -47,6 +48,7 @@ router.get(
   }
 );
 
+//Get User Profile
 router.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
@@ -61,6 +63,7 @@ router.get(
   }
 );
 
+//Update Profile
 router.post(
   "/profile",
   passport.authenticate("jwt", { session: false }),
@@ -74,8 +77,5 @@ router.post(
       .catch(err => err);
   }
 );
-
-// post /login to set up log in
-// put / update user if needed (change name etc)
 
 module.exports = router;
