@@ -253,7 +253,7 @@ const mapStateToProps = state => {
 
   return {
     signUp: signUp,
-    errors: errors,
+    errors: request.errors,
     response: request.response
   };
 };

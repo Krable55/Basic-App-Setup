@@ -11,6 +11,7 @@ import { setToken } from "../../reducers/authReducer";
 import { toggleMenu } from "../../reducers/dashboardReducer";
 import Link from "@material-ui/core/Link";
 import { fetchRequest } from "../../reducers/asyncRequestReducer";
+import { setProfile } from "../../reducers/profileReducer";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -57,6 +58,8 @@ class NavBar extends Component {
       url: "/users/logout",
       data: {}
     });
+    //remove profile data from store
+    this.props.setProfile({});
     this.handleMenuClose();
   };
   handleGoToProfile = e => {
@@ -186,7 +189,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setToken: info => dispatch(setToken(info)),
     fetchRequest: info => dispatch(fetchRequest(info)),
-    toggleMenu: () => dispatch(toggleMenu())
+    toggleMenu: () => dispatch(toggleMenu()),
+    setProfile: info => dispatch(setProfile(info))
   };
 };
 
